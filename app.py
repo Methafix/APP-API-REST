@@ -61,7 +61,7 @@ try:
     #          3. MÉTODO PUT
     # ================================
 
-    print("\n PUT --- Actualizar un producto ---")
+    print("\n PUT --- Actualizar un producto (todos los campos) ---")
 
     producto_actualizado = {
         "title": "Notebook para desarrollar",
@@ -79,5 +79,43 @@ try:
     respuesta.raise_for_status()
     mostrar_respuesta(respuesta)
 
+    # ================================
+    #         4. MÉTODO PATCH
+    # ================================
+
+    print("\n PATCH --- Actualizar un producto (un solo campo), en este caso, el precio ---")
+
+    respuesta = requests.patch(
+        f"{BASE_URL}/1",
+        json = {"price": 590000},
+        timeout = 10
+    )
+
+    respuesta.raise_for_status()
+    mostrar_respuesta(respuesta)
+
+    # ================================
+    #         5. MÉTODO DELETE
+    # ================================
+
+    print("\n DELETE --- Eliminar un producto ---")
+
+    respuesta = requests.delete(
+        f"{BASE_URL}/1",
+        timeout = 10
+    )
+
+    respuesta.raise_for_status()
+    mostrar_respuesta(respuesta)
+
 except requests.exceptions.Timeout:
     print("Error: Se agotó el tiempo de espera")
+
+except requests.exceptions.HTTPError as error:
+    print("Error HTTP:", error)
+
+except requests.exceptions.ConnectionError:
+    print("Error: No fue posible conectar con la API")
+
+except requests.exceptions.RequestException as error:
+    print("Error en la solicitud:", error)
